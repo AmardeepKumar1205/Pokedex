@@ -19,8 +19,7 @@ import axios from "axios";
 const useStyles = makeStyles((theme) => ({
   pokedexContainer: {
     paddingTop: "20px",
-    paddingLeft: "64px",
-    paddingRight: "64px",
+    margin: "0 auto",
   },
   cardMedia: {
     margin: "auto",
@@ -53,32 +52,31 @@ const Pokedex = (props) => {
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
+    const getPokemonData = async () => {
+      try {
+        const response = await axios.get(
+          `https://pokeapi.co/api/v2/pokemon?limit=807`
+        );
+        const {
+          data: { results },
+        } = response;
+        const newPokemonData = {};
+        results.forEach((pokemon, index) => {
+          newPokemonData[index + 1] = {
+            id: index + 1,
+            name: pokemon.name,
+            sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+              index + 1
+            }.png`,
+          };
+        });
+        setPokemonData(newPokemonData);
+      } catch (err) {
+        console.error(err);
+      }
+    };
     getPokemonData();
   }, []);
-
-  const getPokemonData = async () => {
-    try {
-      const response = await axios.get(
-        `https://pokeapi.co/api/v2/pokemon?limit=807`
-      );
-      const {
-        data: { results },
-      } = response;
-      const newPokemonData = {};
-      results.forEach((pokemon, index) => {
-        newPokemonData[index + 1] = {
-          id: index + 1,
-          name: pokemon.name,
-          sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
-            index + 1
-          }.png`,
-        };
-      });
-      setPokemonData(newPokemonData);
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   const handleSearchChange = (e) => {
     setFilter(e.target.value);
@@ -87,7 +85,7 @@ const Pokedex = (props) => {
   const getPokemonCard = (pokemonId) => {
     const { id, name, sprite } = pokemonData[pokemonId];
     return (
-      <Grid item xs={10} sm={5} md={4} lg={3} xl={2} key={pokemonId}>
+      <Grid item xs={12} sm={6} md={4} lg={3} key={pokemonId}>
         <Card onClick={() => history.push(`/${id}`)}>
           <CardMedia
             className={classes.cardMedia}
@@ -120,9 +118,12 @@ const Pokedex = (props) => {
       {pokemonData ? (
         <Grid
           container
-          justify="center"
           spacing={3}
           className={classes.pokedexContainer}
+          xs={12}
+          sm={11}
+          md={10}
+          xl={8}
         >
           {Object.keys(pokemonData).map(
             (pokemonId) =>

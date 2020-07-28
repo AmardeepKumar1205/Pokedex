@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "0 auto",
   },
   cardMedia: {
-    margin: "auto",
+    margin: "20px auto 0 auto",
   },
   cardContent: {
     textAlign: "center",
@@ -65,7 +65,7 @@ const Pokedex = (props) => {
           newPokemonData[index + 1] = {
             id: index + 1,
             name: pokemon.name,
-            sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+            sprite: `https://pokeres.bastionbot.org/images/pokemon/${
               index + 1
             }.png`,
           };
